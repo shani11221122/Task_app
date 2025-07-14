@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>All Tasks</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- SweetAlert2 CDN -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(to right top, #1d4350, #a43931);
+            color: #fff;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 40px;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(16px);
+            border-radius: 20px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 30px;
+        }
+
+        .task {
+            background: rgba(255, 255, 255, 0.08);
+            padding: 20px;
+            border-radius: 14px;
+            margin-bottom: 20px;
+            transition: all 0.3s ease;
+        }
+
+        .task:hover {
+            background: rgba(255, 255, 255, 0.15);
+        }
+
+        .task-title {
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: #fdfdfd;
+        }
+
+        .task-content {
+            font-size: 16px;
+            color: #e0e0e0;
+        }
+
+        .nav-links {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: #ffdd95;
+            font-weight: bold;
+        }
+
+        .nav-links a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="nav-links">
+            <a href="/profile"><i class="fa-solid fa-arrow-left"></i> Back to Create Task</a>
+            <a href="/logout"><i class="fa-solid fa-right-from-bracket"></i> Logout</a>
+        </div>
+
+        <h1><i class="fa-solid fa-list-check"></i> Your Tasks</h1>
+
+      <% tasks.forEach(task => { %>
+    <div class="task">
+        <div class="task-title">
+            <i class="fa-solid fa-thumbtack"></i> <%= task.title %>
+        </div>
+        <div class="task-content"><%= task.content %></div>
+
+        <!-- Action Buttons -->
+        <div style="margin-top: 10px;">
+            <a href="/edit-task/<%= task._id %>" style="color: #00ffb3; margin-right: 10px;">
+                <i class="fa-solid fa-pen-to-square"></i> Edit
+            </a>
+          <form id="delete-form-<%= task._id %>" action="/delete-task/<%= task._id %>" method="POST" style="display:inline;">
+    <button type="button"
+            onclick="confirmDelete('<%= task._id %>')"
+            style="background:none; border:none; color:#ff8080; cursor:pointer;">
+        <i class="fa-solid fa-trash"></i> Delete
+    </button>
+</form>
+
+
+        </div>
+    </div>
+<% }) %>
+
+    </div>
+  <script>
+  function confirmDelete(taskId) {
+    Swal.fire({
+      title: 'Are you sure?',
+      text: "You won't be able to recover this task!",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#e74c3c',
+      cancelButtonColor: '#3498db',
+      confirmButtonText: 'Yes, delete it!',
+      cancelButtonText: 'Cancel'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        document.getElementById(`delete-form-${taskId}`).submit();
+      }
+    });
+  }
+</script>
+
+
+</body>
+</html>
